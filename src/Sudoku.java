@@ -100,7 +100,7 @@ public class Sudoku {
     }
 
     public static void main(String[] args) throws IOException {
-        final String DEFAULT_FILE_TO_SOLVE = "emptyboard";
+        final String DEFAULT_FILE_TO_SOLVE = "emptyboardgit";
         if(args.length == 0) {
 			args = new String[1];
 			args[0] = DEFAULT_FILE_TO_SOLVE;
