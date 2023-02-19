@@ -11,7 +11,7 @@ This is a Java program that solves a 9x9 Sudoku puzzle using recursive backtrack
 4. Create a text file with the unsolved Sudoku puzzle in the following format:
 
 Copy code
-'''
+```
 0 0 3 0 2 0 6 0 0
 9 0 0 3 0 5 0 0 1
 0 0 1 8 0 6 4 0 0
@@ -21,7 +21,7 @@ Copy code
 0 0 2 6 0 9 5 0 0
 8 0 0 2 0 3 0 0 9
 0 0 5 0 1 0 3 0 0
-'''
+```
 Note: Use 0 to represent empty cells in the puzzle. Make sure to leave space between each number.
 
 5. Update the filename variable in the Main.java file to match the name of the file you created in step 3.
