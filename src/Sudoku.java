@@ -1,9 +1,10 @@
-import java.util.Scanner;
 
 import javax.print.attribute.standard.Sides;
 
-import java.io.File;
-import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 
 public class Sudoku {
@@ -18,10 +19,13 @@ public class Sudoku {
             {0,0,0,2,0,0,9,0,0},
             {0,0,1,9,0,4,5,7,0},
     };*/
-    public static int[][] GRID_TO_SOLVE = new int[8][8];
+    public static int[][] GRID_TO_SOLVE = new int[9][9];
 
-
+    
     private final int[][] board;
+    Sudoku(String filename) throws IOException {
+        board = loadSudoku(filename);
+    }
     public static final int EMPTY = 0; // empty cell
     public static final int SIZE = 9; // size of our Sudoku grids
 
@@ -95,12 +99,14 @@ public class Sudoku {
         System.out.println();
     }
 
-    public static void main(String[] args) {
-        if (!loadSudoku()) {
-            System.out.println("Somethig went wrong");
-        }
-        else {
-        Sudoku sudoku = new Sudoku(GRID_TO_SOLVE);
+    public static void main(String[] args) throws IOException {
+        final String DEFAULT_FILE_TO_SOLVE = "emptyboard";
+        if(args.length == 0) {
+			args = new String[1];
+			args[0] = DEFAULT_FILE_TO_SOLVE;
+		}     
+        String file = args[0];   
+        Sudoku sudoku = new Sudoku(file);
         System.out.println();
         sudoku.display();
 
@@ -109,33 +115,31 @@ public class Sudoku {
             sudoku.display();
         } else {
             System.out.println("Sudoku Is Unsolvable");
-        }
-        }   
+        } 
     }
-    public static boolean loadSudoku()
+    public static int[][] loadSudoku(String filename) throws IOException
     {
-        try
-        {
-            Scanner scan = new Scanner(new File("/Users/taikoeda/Desktop/CS Project/Sudoku Solver/src/board.txt"));
+        System.out.println("reading: " + filename);
+        BufferedReader reader = null;
+        int[][] board = new int[9][9];
+        System.out.println("NO ERROR YET");
 
-            if (!scan.hasNextLine())    {System.out.println("Empty File. Exiting..."); return false;}
+        try {
+            reader = new BufferedReader(new FileReader(filename));
 
-            for (int i = 0; i < SIZE; i++)
-            {
-                for (int j = 0; j < SIZE; j++)
-                {
-                    if(scan.hasNextInt()) {
-                        GRID_TO_SOLVE[i][j] = scan.nextInt();
-                    }
+            for(int i = 0; i < 9 && reader.ready(); i++) {
+                String[] splittedRow = reader.readLine().split(" "); // split using the space character
+                for(int j = 0; j < 9; j++) {
+                    board[i][j] = Integer.parseInt(splittedRow[j]);
                 }
             }
-            scan.close(); 
+        } catch (IOException e) {
+            System.out.println("ERROR");
+            // e.printStackTrace();
+        } finally {
+            if (reader != null)
+                reader.close();
         }
-        catch(FileNotFoundException e)
-        {
-            System.out.println("File Not Found. Please create a puzzle.txt in the same folder this app is in. Exiting...");
-        }
-        System.out.println("Sudoku is now loaded.");
-        return true;
+        return board;
     }
 }
